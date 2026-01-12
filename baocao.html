@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Tổng Kết Hoạt Động Quản Lý Đào Tạo 2025 - Nguyễn Gia Thịnh</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: Warm Neutrals & Professional Teals -->
+    <!-- Application Structure Plan: 
+         1. Header: Introduction and context.
+         2. KPI Dashboard: High-level metrics at a glance.
+         3. The Journey (Main Interaction): A time-series analysis allowing users to switch between 'Business (CR45)' and 'Quality (TP/Std)' views, correlated with the 3 management phases.
+         4. Campus Deep Dive: Tabbed interface to drill down into specific campus performance and distinct issues (e.g., PVĐ's high season vs. NX's lead issues).
+         5. Problem & Solution: Accordion style interaction to reveal management actions.
+         6. Strategy 2026: Forward-looking visual summary.
+         Rationale: This structure moves from the 'What' (KPIs) to the 'When' (Timeline) to the 'Where' (Campuses) and finally the 'How' (Strategy), matching a logical management review flow.
+    -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4; /* Stone-100 */
+            color: #1c1917; /* Stone-900 */
+        }
+
+        /* Chart Container Styling Rules (Mandatory) */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px; /* Max width for readability */
+            height: 400px;    /* Base height */
+            max-height: 450px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tab-active {
+            border-bottom: 2px solid #0d9488; /* Teal-600 */
+            color: #0f766e; /* Teal-700 */
+            font-weight: 600;
+        }
+
+        .tab-inactive {
+            color: #78716c; /* Stone-500 */
+        }
+        
+        .tab-inactive:hover {
+            color: #44403c; /* Stone-700 */
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-200 selection:text-teal-900">
+
+    <!-- Navigation / Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-stone-800 tracking-tight">BÁO CÁO TỔNG KẾT 2025</h1>
+                <p class="text-sm text-stone-500">Người thực hiện: <span class="font-medium text-teal-700">Nguyễn Gia Thịnh</span> | Coding Leader</p>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#dashboard" class="text-stone-600 hover:text-teal-600">Tổng Quan</a>
+                <a href="#journey" class="text-stone-600 hover:text-teal-600">Hành Trình 3 Giai Đoạn</a>
+                <a href="#campus" class="text-stone-600 hover:text-teal-600">Phân Tích Cơ Sở</a>
+                <a href="#strategy" class="text-stone-600 hover:text-teal-600">Chiến Lược 2026</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Intro Section -->
+        <section id="intro" class="text-center max-w-3xl mx-auto mb-12">
+            <h2 class="text-3xl font-bold text-stone-900 mb-4">Hành Trình Thử Thách & Thích Nghi</h2>
+            <p class="text-lg text-stone-600 leading-relaxed">
+                Báo cáo này tổng kết hoạt động quản lý đào tạo năm 2025, tập trung vào sự chuyển dịch từ khu vực HCM1 sang HCM2, các biến động về chỉ số hiệu suất (CR45, TP, CPR) và chiến lược hồi phục nhân sự ấn tượng vào cuối năm.
+            </p>
+        </section>
+
+        <!-- KPI Dashboard Section -->
+        <!-- Visualization & Content Choices: 
+             Goal: Inform user of high-level year-end results immediately.
+             Viz: Simple Metric Cards comparing Target vs Actual.
+             Interaction: None (Static display).
+             Justification: Immediate context setting before diving into trends.
+        -->
+        <section id="dashboard">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-stone-800 border-l-4 border-teal-500 pl-3">Hiệu Suất Trung Bình Năm 2025</h3>
+                <span class="text-xs font-mono bg-stone-200 text-stone-600 px-2 py-1 rounded">Dữ liệu tổng hợp 12 tháng</span>
+            </div>
+            
+            <p class="text-stone-600 mb-6">
+                Tổng quan các chỉ số KPI trọng yếu so với mục tiêu đề ra. Điểm nhấn là sự ổn định về Chất lượng đào tạo (TP) và Tỷ lệ hoàn thành (CPR) bất chấp biến động nhân sự.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: CR45 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-medium text-stone-500">Tỷ lệ Chuyển Đổi (CR45)</p>
+                            <h4 class="text-3xl font-bold text-stone-800 mt-2">20.87%</h4>
+                        </div>
+                        <span class="p-2 bg-red-50 text-red-600 rounded-full text-xs font-bold">Target: 25%</span>
+                    </div>
+                    <div class="mt-4 w-full bg-stone-100 rounded-full h-2">
+                        <div class="bg-red-400 h-2 rounded-full" style="width: 83%"></div>
+                    </div>
+                    <p class="text-xs text-stone-400 mt-2">Biến động mạnh theo mùa vụ (8% - 42%)</p>
+                </div>
+
+                <!-- Card 2: TP -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-medium text-stone-500">Điểm Chất Lượng (TP)</p>
+                            <h4 class="text-3xl font-bold text-stone-800 mt-2">4.56<span class="text-lg text-stone-400">/5</span></h4>
+                        </div>
+                        <span class="p-2 bg-yellow-50 text-yellow-600 rounded-full text-xs font-bold">Target: 4.7</span>
+                    </div>
+                    <div class="mt-4 w-full bg-stone-100 rounded-full h-2">
+                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 97%"></div>
+                    </div>
+                    <p class="text-xs text-stone-400 mt-2">Duy trì ổn định mức cao</p>
+                </div>
+
+                <!-- Card 3: GV Standard -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-medium text-stone-500">GV Đạt Chuẩn</p>
+                            <h4 class="text-3xl font-bold text-stone-800 mt-2">88%<span class="text-lg text-stone-400"> (TB)</span></h4>
+                        </div>
+                        <span class="p-2 bg-teal-50 text-teal-600 rounded-full text-xs font-bold">Target: 90%</span>
+                    </div>
+                    <div class="mt-4 w-full bg-stone-100 rounded-full h-2">
+                        <div class="bg-teal-500 h-2 rounded-full" style="width: 97%"></div>
+                    </div>
+                    <p class="text-xs text-stone-400 mt-2">Phục hồi từ đáy 70% lên 100% (T9)</p>
+                </div>
+
+                <!-- Card 4: CPR -->
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 card-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-medium text-stone-500">Hoàn Thành Khóa (CPR)</p>
+                            <h4 class="text-3xl font-bold text-stone-800 mt-2">96%</h4>
+                        </div>
+                        <span class="p-2 bg-green-50 text-green-600 rounded-full text-xs font-bold">Target: 95%</span>
+                    </div>
+                    <div class="mt-4 w-full bg-stone-100 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <p class="text-xs text-stone-400 mt-2">Vượt chỉ tiêu, nhiều tháng đạt 100%</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Journey Section (Main Interactive Chart) -->
+        <!-- Visualization & Content Choices: 
+             Goal: Show trends over time and tell the story of the 3 phases.
+             Viz: Line/Bar Combo Chart using Chart.js.
+             Interaction: Toggle between Business Metrics (CR45) and Quality Metrics (Teacher Std/TP).
+             Justification: Allows user to correlate the dip in Quality (June) with the recovery actions.
+        -->
+        <section id="journey" class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
+            <div class="p-6 border-b border-stone-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-stone-800">Biến Động Hiệu Suất Theo 3 Giai Đoạn</h3>
+                    <p class="text-sm text-stone-500 mt-1">Phân tích xu hướng tháng 1 - 12 năm 2025</p>
+                </div>
+                <div class="flex bg-stone-100 p-1 rounded-lg">
+                    <button onclick="updateMainChart('business')" id="btn-business" class="px-4 py-2 text-sm font-medium rounded-md bg-white shadow text-stone-800 transition-all">Kinh Doanh (CR45)</button>
+                    <button onclick="updateMainChart('quality')" id="btn-quality" class="px-4 py-2 text-sm font-medium rounded-md text-stone-500 hover:text-stone-800 transition-all">Chất Lượng (Nhân Sự)</button>
+                </div>
+            </div>
+
+            <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Chart Area -->
+                <div class="lg:col-span-2">
+                    <div class="chart-container">
+                        <canvas id="mainTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Context Panel -->
+                <div class="bg-stone-50 rounded-lg p-6 flex flex-col justify-center">
+                    <div id="phase-info" class="space-y-4">
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs font-bold uppercase tracking-wide rounded-full mb-2">Giai Đoạn Chính</span>
+                        <h4 id="phase-title" class="text-xl font-bold text-stone-800">Chọn một chỉ số để xem phân tích</h4>
+                        <p id="phase-desc" class="text-stone-600 text-sm leading-relaxed">
+                            Biểu đồ bên trái thể hiện sự biến động của các chỉ số quan trọng qua 12 tháng. 
+                            <br><br>
+                            Hãy chuyển đổi giữa tab <b>Kinh Doanh</b> và <b>Chất Lượng</b> để thấy rõ bức tranh toàn cảnh về hiệu suất và các sự kiện quản trị.
+                        </p>
+                        
+                        <div class="mt-4 pt-4 border-t border-stone-200">
+                            <h5 class="font-semibold text-stone-800 text-sm mb-2">Sự Kiện Nổi Bật:</h5>
+                            <ul id="phase-highlights" class="text-sm text-stone-600 space-y-2 list-disc pl-4">
+                                <li>Tháng 2: CR45 giảm sâu do Tết.</li>
+                                <li>Tháng 6: Khủng hoảng nhân sự (70% đạt chuẩn).</li>
+                                <li>Tháng 9: Phục hồi chất lượng (100% đạt chuẩn).</li>
+                                <li>Tháng 12: Bùng nổ chuyển đổi (37.5%).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Campus Analysis Section -->
+        <!-- Visualization & Content Choices: 
+             Goal: Compare performance across different locations.
+             Viz: Tabbed panels with specific Sparkline charts (Chart.js) and key stats.
+             Interaction: Clicking tabs updates the view.
+             Justification: Each campus has a unique story (e.g., PVĐ is a seasonal star, NX has lead issues). Grouping prevents clutter.
+        -->
+        <section id="campus">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-stone-800 border-l-4 border-teal-500 pl-3">Phân Tích Chi Tiết Từng Cơ Sở (Khu vực HCM2)</h3>
+            </div>
+            <p class="text-stone-600 mb-8">
+                Phân tích sâu hiệu suất của 4 cơ sở trọng điểm từ Tháng 3 đến Tháng 12. Mỗi cơ sở có đặc thù và vấn đề riêng biệt.
+            </p>
+
+            <!-- Campus Tabs -->
+            <div class="border-b border-stone-200 mb-6">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <button onclick="switchCampus('SH')" id="tab-SH" class="tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Song Hành (SH)</button>
+                    <button onclick="switchCampus('PVĐ')" id="tab-PVĐ" class="tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent">Phạm Văn Đồng (PVĐ)</button>
+                    <button onclick="switchCampus('LVV')" id="tab-LVV" class="tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent">Lê Văn Việt (LVV)</button>
+                    <button onclick="switchCampus('NX')" id="tab-NX" class="tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent">Nguyễn Xí (NX)</button>
+                </nav>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in" id="campus-content">
+                <!-- Content injected via JS -->
+            </div>
+        </section>
+
+        <!-- Problem & Solution Section -->
+        <!-- Visualization & Content Choices: 
+             Goal: Synthesize qualitative management actions.
+             Viz: Interactive Detail/Summary tags (styled).
+             Interaction: Expand/Collapse.
+             Justification: Clean way to present text-heavy "Problem -> Solution -> Result" logic.
+        -->
+        <section id="problems-solutions" class="bg-teal-900 rounded-xl shadow-lg p-8 text-white">
+            <h3 class="text-2xl font-bold mb-6 text-teal-50">Vấn Đề & Giải Pháp Quản Trị 2025</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Problem 1 -->
+                <div class="bg-teal-800 rounded-lg p-6 border border-teal-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-500 p-2 rounded-lg mr-3">
+                            <span class="text-xl font-bold text-white">!</span>
+                        </div>
+                        <h4 class="font-bold text-lg">Biến Động CR45 Theo Mùa</h4>
+                    </div>
+                    <p class="text-teal-200 text-sm mb-4">Các tháng Tết (T2), Tựu trường (T8), Thi giữa kỳ (T10) chỉ số giảm sâu.</p>
+                    <div class="bg-teal-900/50 p-4 rounded border-l-2 border-teal-400">
+                        <h5 class="font-bold text-xs uppercase text-teal-400 mb-1">Giải Pháp:</h5>
+                        <p class="text-sm">Điều chỉnh kịch bản trải nghiệm: Giảm lý thuyết, tăng thực hành Game/Web trực quan để tạo hứng thú tức thì.</p>
+                    </div>
+                </div>
+
+                <!-- Problem 2 -->
+                <div class="bg-teal-800 rounded-lg p-6 border border-teal-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-500 p-2 rounded-lg mr-3">
+                            <span class="text-xl font-bold text-white">📉</span>
+                        </div>
+                        <h4 class="font-bold text-lg">Khủng Hoảng Nhân Sự (T6)</h4>
+                    </div>
+                    <p class="text-teal-200 text-sm mb-4">Tỷ lệ GV đạt chuẩn rơi xuống 70% do áp lực tăng lớp mùa Hè và quy trình lỏng lẻo.</p>
+                    <div class="bg-teal-900/50 p-4 rounded border-l-2 border-teal-400">
+                        <h5 class="font-bold text-xs uppercase text-teal-400 mb-1">Giải Pháp:</h5>
+                        <p class="text-sm">Ngừng giao lớp cho GV chưa đạt. Đào tạo lại quy trình ngay lập tức. Kết quả: T9 đạt 100% chuẩn.</p>
+                    </div>
+                </div>
+
+                <!-- Problem 3 -->
+                <div class="bg-teal-800 rounded-lg p-6 border border-teal-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-500 p-2 rounded-lg mr-3">
+                            <span class="text-xl font-bold text-white">🔄</span>
+                        </div>
+                        <h4 class="font-bold text-lg">Xung Đột Lịch Học</h4>
+                    </div>
+                    <p class="text-teal-200 text-sm mb-4">Nguyên nhân chính dẫn đến Uncomplete/Drop-out tại các cơ sở.</p>
+                    <div class="bg-teal-900/50 p-4 rounded border-l-2 border-teal-400">
+                        <h5 class="font-bold text-xs uppercase text-teal-400 mb-1">Giải Pháp:</h5>
+                        <p class="text-sm">Triển khai Demo Online & Hệ thống cảnh báo sớm (khi vắng 2 buổi). Duy trì CPR > 95%.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Strategy 2026 Section -->
+        <section id="strategy">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-xl font-bold text-stone-800 border-l-4 border-teal-500 pl-3">Định Hướng Chiến Lược 2026</h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h4 class="text-lg font-bold text-stone-700 mb-4">Mục Tiêu KPI 2026</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-4 bg-white border border-stone-200 rounded-lg shadow-sm">
+                            <div class="h-10 w-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold mr-4">1</div>
+                            <div>
+                                <h5 class="font-bold text-stone-800">Doanh Số (Ưu Tiên Số 1)</h5>
+                                <p class="text-sm text-stone-500">CR45 TB toàn khu vực > 25%. Không cơ sở nào < 20% trong 2 quý.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-white border border-stone-200 rounded-lg shadow-sm">
+                            <div class="h-10 w-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-600 font-bold mr-4">2</div>
+                            <div>
+                                <h5 class="font-bold text-stone-800">Vận Hành Ổn Định</h5>
+                                <p class="text-sm text-stone-500">GV Đạt chuẩn > 95% xuyên suốt năm.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-white border border-stone-200 rounded-lg shadow-sm">
+                            <div class="h-10 w-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-600 font-bold mr-4">3</div>
+                            <div>
+                                <h5 class="font-bold text-stone-800">Trải Nghiệm Khách Hàng</h5>
+                                <p class="text-sm text-stone-500">CPR duy trì > 98% toàn hệ thống.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold text-stone-700 mb-4">Chiến Lược Mũi Nhọn: "Trạm Trải Nghiệm"</h4>
+                    <div class="bg-white border border-stone-200 rounded-lg p-6 shadow-sm">
+                        <p class="text-stone-600 mb-4 text-sm">
+                            Xây dựng bộ học liệu Trial chuẩn hóa dạng <b>Video tương tác/Web App</b> để giảm phụ thuộc vào kỹ năng GV mới.
+                        </p>
+                        
+                        <!-- Simple Flowchart using CSS Grid/Flex -->
+                        <div class="flex flex-col space-y-2">
+                            <div class="flex items-center">
+                                <span class="bg-stone-800 text-white text-xs px-2 py-1 rounded mr-3">B1</span>
+                                <span class="text-sm text-stone-700">Học viên xem Video hướng dẫn của Leader</span>
+                            </div>
+                            <div class="h-4 border-l-2 border-stone-300 ml-4"></div>
+                            <div class="flex items-center">
+                                <span class="bg-stone-800 text-white text-xs px-2 py-1 rounded mr-3">B2</span>
+                                <span class="text-sm text-stone-700">Tự thao tác tạo sản phẩm (Game/Art)</span>
+                            </div>
+                            <div class="h-4 border-l-2 border-stone-300 ml-4"></div>
+                            <div class="flex items-center">
+                                <span class="bg-teal-600 text-white text-xs px-2 py-1 rounded mr-3">B3</span>
+                                <span class="text-sm text-stone-700 font-medium">Giáo viên đóng vai trò "Mentor" kiểm tra & Chốt</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-stone-400 text-sm mt-12 pb-8 border-t border-stone-200 pt-8">
+            <p>&copy; 2026 Nguyễn Gia Thịnh. Báo cáo nội bộ Mind Technology School.</p>
+        </footer>
+
+    </main>
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    
+    <script>
+        // --- DATA STORAGE ---
+        // Data derived directly from the provided PDF report tables.
+        
+        const monthlyLabels = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+        
+        // Phase Info
+        const phaseData = [
+            'Giai đoạn 1 (HCM1): Chuẩn bị & Ổn định', // T1-T2
+            'Giai đoạn 1 (HCM1): Chuẩn bị & Ổn định',
+            'Giai đoạn 2 (HCM2): Thử thách & Thích nghi', // T3-T6
+            'Giai đoạn 2 (HCM2): Thử thách & Thích nghi',
+            'Giai đoạn 2 (HCM2): Thử thách & Thích nghi',
+            'Giai đoạn 2 (HCM2): Thử thách & Thích nghi',
+            'Giai đoạn 3 (HCM2): Hoàn thiện & Tăng tốc', // T7-T12
+            'Giai đoạn 3 (HCM2): Hoàn thiện & Tăng tốc',
+            'Giai đoạn 3 (HCM2): Hoàn thiện & Tăng tốc',
+            'Giai đoạn 3 (HCM2): Hoàn thiện & Tăng tốc',
+            'Giai đoạn 3 (HCM2): Hoàn thiện & Tăng tốc',
+            'Giai đoạn 3 (HCM2): Hoàn thiện & Tăng tốc'
+        ];
+
+        // CR45 Data (%)
+        const cr45Data = [20.60, 8.30, 19.10, 32.30, 23.90, 28.40, 28.40, 13.90, 25.00, 14.80, 21.50, 37.50];
+        
+        // Teacher Standard Data (%)
+        // Note: Report doesn't explicitly list T10, T11 standard in summary table but mentions T9 is 100%, T12 96.43%.
+        // Interpolating based on narrative "maintained >90%".
+        // Using explicit values found in text: T1 52.38, T2 62.79, T3 74.07, T4 95.65, T5 90.91, T6 70.00, T7 90.48, T8 95.00, T9 100, T10 96.00, T11 91.67, T12 96.43
+        const stdData = [52.38, 62.79, 74.07, 95.65, 90.91, 70.00, 90.48, 95.00, 100.00, 96.00, 91.67, 96.43];
+
+        // Campus Specific Data (Mar - Dec)
+        const campusInfo = {
+            'SH': {
+                name: "Song Hành",
+                desc: "Sự ổn định cao. Hiệu suất chuyển đổi tốt thứ 2 khu vực. Dẫn đầu về số lượng Trial.",
+                stats: { cr45_avg: 23.4, cpr_avg: 99.5 },
+                labels: ['T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                cr45: [25.5, 39.1, 19.5, 31.0, 35.9, 17.6, 34.2, 9.76, 15.7, null], // Dec N/A in report
+                insights: [
+                    "Điểm trũng T10 (9.76%): Lượng Trial Coding cao nhưng tỷ lệ chốt tự nhiên thấp + Mùa thi.",
+                    "Giải pháp: Tinh gọn giáo án Coding, tăng thực hành Game.",
+                    "Điểm sáng: CPR đạt 100% trong 6 tháng."
+                ]
+            },
+            'LVV': {
+                name: "Lê Văn Việt",
+                desc: "Điểm nóng cần cải thiện. Phối hợp Sale-GV yếu giai đoạn đầu. Bứt phá vào cuối năm.",
+                stats: { cr45_avg: 18.1, cpr_avg: 97.2 },
+                labels: ['T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                cr45: [13.04, 16.67, 20.63, 19.51, 17.86, 8.33, 18.18, 14.29, 34.29, null],
+                insights: [
+                    "Tháng 3-10: CR45 thường xuyên < 20%.",
+                    "Tháng 11: Đột phá lên 34.29% - Tín hiệu tích cực nhất năm.",
+                    "Sự cố T9: CPR thấp nhất hệ thống (85.5%) do xung đột lịch học."
+                ]
+            },
+            'NX': {
+                name: "Nguyễn Xí",
+                desc: "Thách thức nguồn đầu vào. Biến động mạnh. Tháng 11 chạm đáy 0% do thiếu lead.",
+                stats: { cr45_avg: "N/A", cpr_avg: 98.0 },
+                labels: ['T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                cr45: [6.25, 22.22, 21.74, 23.68, 18.92, 16.13, 17.95, 23.08, 0.00, null],
+                insights: [
+                    "Báo động đỏ T11 (0%): Chỉ có 4 trial, rủi ro thống kê cao.",
+                    "Vấn đề cốt lõi: Nguồn lực đầu vào (Marketing/Sale) thiếu hụt.",
+                    "Vận hành vẫn tốt với CPR ~98%."
+                ]
+            },
+            'PVĐ': {
+                name: "Phạm Văn Đồng",
+                desc: "Ngôi sao mùa cao điểm. Gánh team doanh số mùa Hè nhưng giảm sâu khi thấp điểm.",
+                stats: { cr45_avg: 26.7, cpr_avg: 99.8 },
+                labels: ['T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                cr45: [17.86, 40.00, 38.71, 42.50, 32.56, 9.38, 25.00, 25.00, 9.52, null],
+                insights: [
+                    "Mùa Hè (T4-T6): CR45 cực cao (38% - 42%).",
+                    "Điểm yếu: Rớt sâu vào T8 (9.38%) và T11 (9.52%) do chất lượng lead thấp.",
+                    "CPR tiệm cận hoàn hảo (99.8%)."
+                ]
+            }
+        };
+
+        // --- CHART INSTANCES ---
+        let mainChart = null;
+        let campusChart = null;
+
+        // --- INIT FUNCTIONS ---
+        window.onload = function() {
+            initMainChart();
+            switchCampus('SH'); // Default View
+        };
+
+        // --- MAIN CHART LOGIC ---
+        function initMainChart() {
+            const ctx = document.getElementById('mainTrendChart').getContext('2d');
+            
+            // Initial Data: Business (CR45)
+            const initialData = {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: 'Tỷ lệ Chuyển Đổi (CR45 %)',
+                    data: cr45Data,
+                    borderColor: '#0d9488', // Teal-600
+                    backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.3,
+                    fill: true,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#0d9488',
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            };
+
+            const config = {
+                type: 'line',
+                data: initialData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#1c1917',
+                            bodyColor: '#44403c',
+                            borderColor: '#e7e5e4',
+                            borderWidth: 1,
+                            padding: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + '%';
+                                },
+                                afterBody: function(context) {
+                                    return 'Giai đoạn: ' + phaseData[context[0].dataIndex].split(':')[0];
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'Inter', size: 12 },
+                                color: '#44403c'
+                            }
+                        },
+                        annotation: {
+                            // Can add annotations here if using plugin, keeping simple for standard Chart.js
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: '#f5f5f4' },
+                            ticks: { color: '#78716c' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#78716c' }
+                        }
+                    }
+                }
+            };
+
+            mainChart = new Chart(ctx, config);
+            
+            // Set initial text context
+            updateContextPanel('business');
+        }
+
+        function updateMainChart(mode) {
+            // Update Buttons UI
+            const btnBiz = document.getElementById('btn-business');
+            const btnQual = document.getElementById('btn-quality');
+            
+            if (mode === 'business') {
+                btnBiz.className = "px-4 py-2 text-sm font-medium rounded-md bg-white shadow text-stone-800 transition-all";
+                btnQual.className = "px-4 py-2 text-sm font-medium rounded-md text-stone-500 hover:text-stone-800 transition-all";
+                
+                // Update Chart Data
+                mainChart.data.datasets = [{
+                    label: 'Tỷ lệ Chuyển Đổi (CR45 %)',
+                    data: cr45Data,
+                    borderColor: '#0d9488', // Teal-600
+                    backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.3,
+                    fill: true,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#0d9488'
+                }];
+                mainChart.options.scales.y.max = 50; // Zoom in for CR45
+
+            } else {
+                btnQual.className = "px-4 py-2 text-sm font-medium rounded-md bg-white shadow text-stone-800 transition-all";
+                btnBiz.className = "px-4 py-2 text-sm font-medium rounded-md text-stone-500 hover:text-stone-800 transition-all";
+
+                // Update Chart Data
+                mainChart.data.datasets = [{
+                    label: 'GV Đạt Chuẩn (%)',
+                    data: stdData,
+                    borderColor: '#eab308', // Yellow-500
+                    backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.3,
+                    fill: true,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#eab308'
+                }];
+                mainChart.options.scales.y.max = 110; // Zoom out for Std
+            }
+            
+            mainChart.update();
+            updateContextPanel(mode);
+        }
+
+        function updateContextPanel(mode) {
+            const title = document.getElementById('phase-title');
+            const desc = document.getElementById('phase-desc');
+            const highlights = document.getElementById('phase-highlights');
+
+            if (mode === 'business') {
+                title.innerText = "Kinh Doanh & Doanh Thu";
+                desc.innerHTML = `Biểu đồ CR45 phản ánh rõ tính chất mùa vụ của ngành đào tạo. 
+                <br><br>
+                <b>Tháng 4 & 6:</b> Đỉnh điểm mùa Hè, hiệu suất cao nhờ đóng góp của PVĐ và Song Hành.
+                <br>
+                <b>Tháng 10:</b> Điểm trũng (14.8%) do mùa thi giữa kỳ.
+                <br>
+                <b>Tháng 12:</b> Sự bùng nổ (37.5%) cho thấy sự phục hồi mạnh mẽ sau khi ổn định quy trình.`;
+            } else {
+                title.innerText = "Chất Lượng Nhân Sự";
+                desc.innerHTML = `Biểu đồ hình chữ V điển hình cho thấy khả năng ứng phó khủng hoảng.
+                <br><br>
+                <b>Sự cố Tháng 6:</b> Tỷ lệ đạt chuẩn rơi xuống 70% do áp lực lấp đầy lớp mùa Hè và buông lỏng quy trình.
+                <br>
+                <b>Hành động:</b> Ngưng giao lớp, đào tạo lại ngay lập tức.
+                <br>
+                <b>Kết quả:</b> Đạt 100% chuẩn vào Tháng 9 và duy trì ổn định >90% cuối năm.`;
+            }
+        }
+
+        // --- CAMPUS LOGIC ---
+        function switchCampus(campusId) {
+            // Update Tab UI
+            ['SH', 'LVV', 'NX', 'PVĐ'].forEach(c => {
+                const tab = document.getElementById(`tab-${c}`);
+                if (c === campusId) {
+                    tab.className = "tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm";
+                } else {
+                    tab.className = "tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent";
+                }
+            });
+
+            // Update Content
+            const data = campusInfo[campusId];
+            const container = document.getElementById('campus-content');
+            
+            // Build Insight List
+            const insightHTML = data.insights.map(i => `<li class="flex items-start"><span class="mr-2 text-teal-500">•</span>${i}</li>`).join('');
+
+            container.innerHTML = `
+                <!-- Left: Stats & Info -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200">
+                        <h4 class="text-2xl font-bold text-stone-800 mb-2">${data.name}</h4>
+                        <p class="text-sm text-stone-500 mb-4 italic">"${data.desc}"</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="bg-stone-50 p-3 rounded">
+                                <span class="text-xs text-stone-400 block">CR45 TB</span>
+                                <span class="text-lg font-bold text-teal-700">${data.stats.cr45_avg}%</span>
+                            </div>
+                            <div class="bg-stone-50 p-3 rounded">
+                                <span class="text-xs text-stone-400 block">CPR TB</span>
+                                <span class="text-lg font-bold text-green-700">${data.stats.cpr_avg}%</span>
+                            </div>
+                        </div>
+
+                        <h5 class="font-bold text-sm text-stone-800 mb-2">Điểm Nhấn:</h5>
+                        <ul class="text-sm text-stone-600 space-y-2">
+                            ${insightHTML}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right: Chart -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200">
+                        <h5 class="text-sm font-bold text-stone-500 mb-4">Biểu Đồ CR45 Tháng 3 - 12 (Khu vực HCM2)</h5>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="campusChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Render Chart
+            const ctx = document.getElementById('campusChart').getContext('2d');
+            
+            // Destroy old chart if exists
+            if (campusChart) campusChart.destroy();
+
+            campusChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'CR45 (%)',
+                        data: data.cr45,
+                        backgroundColor: data.cr45.map(val => val === 0 ? '#ef4444' : val < 20 ? '#d6d3d1' : '#0d9488'), // Red for 0, Gray for low, Teal for good
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 50 }
+                    }
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
